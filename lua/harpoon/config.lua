@@ -56,6 +56,10 @@ end
 ---@param list HarpoonList
 ---@param bufnr? integer
 function M.update_harpoon_item_position(list, bufnr)
+    -- Only file-backed lists have a root; generic lists need no cursor sync.
+    if type(list.config.get_root_dir) ~= "function" then
+        return
+    end
     bufnr = bufnr or vim.api.nvim_get_current_buf()
     local bufname = normalize_path(
         vim.api.nvim_buf_get_name(bufnr),
@@ -63,7 +67,7 @@ function M.update_harpoon_item_position(list, bufnr)
     )
     local item = list:get_by_value(bufname)
 
-    if item then
+    if item and type(item.context) == "table" then
         local pos = vim.api.nvim_win_get_cursor(0)
 
         Logger:log(
