@@ -64,6 +64,18 @@ describe("list", function()
         eq(nil, item.context)
     end)
 
+    it("position updates preserve custom non-cursor contexts", function()
+        local config = Config.get_config(Config.merge_config(), "custom")
+        local item = { value = "task-one", context = { kind = "note" } }
+        local list = List:new(config, "custom", { item })
+        list.get_by_value = function()
+            return item
+        end
+
+        Config.update_harpoon_item_position(list)
+        eq({ kind = "note" }, item.context)
+    end)
+
     it("select_with_nil", function()
         local foo_selected = nil
         local bar_selected = nil
