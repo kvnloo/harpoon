@@ -67,7 +67,12 @@ function M.update_harpoon_item_position(list, bufnr)
     )
     local item = list:get_by_value(bufname)
 
-    if item and type(item.context) == "table" then
+    -- Custom list payloads can be tables without file cursor coordinates.
+    if item
+        and type(item.context) == "table"
+        and type(item.context.row) == "number"
+        and type(item.context.col) == "number"
+    then
         local pos = vim.api.nvim_win_get_cursor(0)
 
         Logger:log(
