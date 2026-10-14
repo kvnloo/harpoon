@@ -36,6 +36,34 @@ describe("list", function()
         })
     end)
 
+    it("does not treat duplicate custom-list items as files", function()
+        local list = List:new({
+            equals = function(a, b)
+                return a.value == b.value
+            end,
+        }, "custom", {
+            { value = "task-one", context = { kind = "note" } },
+        })
+        local duplicate = { value = "task-one", context = { kind = "note" } }
+        list:add(duplicate)
+        list:prepend(duplicate)
+
+        eq(1, list:length())
+        eq({ value = "task-one", context = { kind = "note" } }, list.items[1])
+    end)
+
+    it("position updates skip items without a file cursor context", function()
+        local config = Config.get_config(Config.merge_config(), "custom")
+        local item = { value = "task-one", context = nil }
+        local list = List:new(config, "custom", { item })
+        list.get_by_value = function()
+            return item
+        end
+
+        Config.update_harpoon_item_position(list)
+        eq(nil, item.context)
+    end)
+
     it("select_with_nil", function()
         local foo_selected = nil
         local bar_selected = nil
