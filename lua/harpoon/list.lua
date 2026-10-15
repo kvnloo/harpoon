@@ -208,10 +208,11 @@ end
 
 ---@return HarpoonList
 function HarpoonList:remove_at(index)
-    if self.items[index] then
+    local item = self.items[index]
+    if item then
         Logger:log(
             "HarpoonList:removeAt",
-            { item = self.items[index], index = index }
+            { item = item, index = index }
         )
         self.items[index] = nil
         if index == self._length then
@@ -219,7 +220,7 @@ function HarpoonList:remove_at(index)
         end
         Extensions.extensions:emit(
             Extensions.event_names.REMOVE,
-            { list = self, item = self.items[index], idx = index }
+            { list = self, item = item, idx = index }
         )
     end
     return self
