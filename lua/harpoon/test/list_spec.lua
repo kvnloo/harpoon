@@ -37,13 +37,17 @@ describe("list", function()
     end)
 
     it("does not treat duplicate custom-list items as files", function()
-        local list = List:new({
-            equals = function(a, b)
-                return a.value == b.value
-            end,
-        }, "custom", {
-            { value = "task-one", context = { kind = "note" } },
-        })
+        local list = List:new(
+            {
+                equals = function(a, b)
+                    return a.value == b.value
+                end,
+            },
+            "custom",
+            {
+                { value = "task-one", context = { kind = "note" } },
+            }
+        )
         local duplicate = { value = "task-one", context = { kind = "note" } }
         list:add(duplicate)
         list:prepend(duplicate)

@@ -68,7 +68,8 @@ function M.update_harpoon_item_position(list, bufnr)
     local item = list:get_by_value(bufname)
 
     -- Custom list payloads can be tables without file cursor coordinates.
-    if item
+    if
+        item
         and type(item.context) == "table"
         and type(item.context.row) == "number"
         and type(item.context.col) == "number"
