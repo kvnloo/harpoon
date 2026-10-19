@@ -198,7 +198,7 @@ function HarpoonList:remove(item)
             end
             Extensions.extensions:emit(
                 Extensions.event_names.REMOVE,
-                { list = self, item = item, idx = i }
+                { list = self, item = v, idx = i }
             )
             break
         end
