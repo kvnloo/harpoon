@@ -39,7 +39,7 @@ local function index_of(items, length, element, config)
     local index = -1
     for i = 1, length do
         local item = items[i]
-        if equals(element, item) then
+        if item ~= nil and equals(element, item) then
             index = i
             break
         end
@@ -190,7 +190,7 @@ function HarpoonList:remove(item)
     item = item or self.config.create_list_item(self.config)
     for i = 1, self._length do
         local v = self.items[i]
-        if self.config.equals(v, item) then
+        if v ~= nil and self.config.equals(v, item) then
             Logger:log("HarpoonList:remove", { item = item, index = i })
             self.items[i] = nil
             if i == self._length then
